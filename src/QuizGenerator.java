@@ -8,11 +8,10 @@ public class QuizGenerator {
     static Map<String, Map<String, Quizz>> quizBasedOnTopic = new HashMap<>();
     static Scanner sc = new Scanner(System.in);
     static ArrayList<String> topics = new ArrayList<>();
-
+    static boolean check = false;
 
 public static void createQuiz() {
     try {
-        sc.nextLine();
         System.out.println("Enter the topic you want to create quiz:");
         String topic = sc.nextLine();
         topics.add(topic);
@@ -127,104 +126,45 @@ public static void createQuiz() {
         else
             System.out.println("Poor Performance :(");
         System.out.println("You have scored " + score + " out of " + quizes.size() * 5);
+        sc.nextLine();
     }
 
     public static void modifyQuiz() {
-        System.out.println("Modify Quiz");
-        System.out.println("1. Add Question\n2. Remove Question\n3. Edit Question");
-        int choice = sc.nextInt();
-        sc.nextLine(); // Consume newline
+        try {
+            System.out.println("Modify Quiz");
+            System.out.println("1. Add Question\n2. Remove Question\n3. Edit Question");
+            int choice = sc.nextInt();
+            sc.nextLine(); // Consume newline
 
-        switch (choice) {
-            case 1:
-                addQuestion();
-                break;
-            case 2:
-                removeQuestion();
-                break;
-            case 3:
-                editQuestion();
-                break;
-            default:
-                System.out.println("Invalid choice!");
+            switch (choice) {
+                case 1:
+                    addQuestion();
+                    break;
+                case 2:
+                    removeQuestion();
+                    break;
+                case 3:
+                    editQuestion();
+                    break;
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a number.");
+            sc.nextLine(); // Clear the invalid input
         }
     }
 
     private static void addQuestion() {
-        System.out.println("Select the topic to add a question:");
-        for (String topic : topics) {
-            System.out.println(topic);
-        }
-        String chosenTopic = sc.nextLine();
-        if (quizBasedOnTopic.containsKey(chosenTopic)) {
-            System.out.println("Enter the question you want to add:");
-            String ques = sc.nextLine();
-            Quizz q = new Quizz();
-            System.out.println("Enter the four options:");
-            for (int j = 0; j < 4; j++) {
-                String option = sc.nextLine();
-                q.setOption(option);
+        try {
+            System.out.println("Select the topic to add a question:");
+            for (String topic : topics) {
+                System.out.println(topic);
             }
-            System.out.println("Enter the correct option number (1-4):");
-            int optionNo = sc.nextInt();
-            sc.nextLine(); // Consume newline
-            String answer = q.getOptions().get(optionNo - 1);
-            q.setAnswer(answer);
-            q.setAnswerId(optionNo);
-            quizBasedOnTopic.get(chosenTopic).put(ques, q);
-            System.out.println("Question added to " + chosenTopic);
-        } else {
-            System.out.println("Invalid Topic!");
-        }
-    }
-
-    private static void removeQuestion() {
-        System.out.println("Select the topic to remove a question:");
-        for (String topic : topics) {
-            System.out.println(topic);
-        }
-        String chosenTopic = sc.nextLine();
-        if (quizBasedOnTopic.containsKey(chosenTopic)) {
-            Map<String, Quizz> quizesOfChosenTopic = quizBasedOnTopic.get(chosenTopic);
-            System.out.println("Select the question to remove:");
-            List<String> questions = new ArrayList<>(quizesOfChosenTopic.keySet());
-            for (int i = 0; i < questions.size(); i++) {
-                System.out.println((i + 1) + ". " + questions.get(i));
-            }
-            int quesNo = sc.nextInt();
-            sc.nextLine(); // Consume newline
-            if (quesNo > 0 && quesNo <= questions.size()) {
-                quizesOfChosenTopic.remove(questions.get(quesNo - 1));
-                System.out.println("Question removed from " + chosenTopic);
-            } else {
-                System.out.println("Invalid question number!");
-            }
-        } else {
-            System.out.println("Invalid Topic!");
-        }
-    }
-
-    private static void editQuestion() {
-        System.out.println("Select the topic to edit a question:");
-        for (String topic : topics) {
-            System.out.println(topic);
-        }
-        String chosenTopic = sc.nextLine();
-        if (quizBasedOnTopic.containsKey(chosenTopic)) {
-            Map<String, Quizz> quizesOfChosenTopic = quizBasedOnTopic.get(chosenTopic);
-            System.out.println("Select the question to edit:");
-            List<String> questions = new ArrayList<>(quizesOfChosenTopic.keySet());
-            for (int i = 0; i < questions.size(); i++) {
-                System.out.println((i + 1) + ". " + questions.get(i));
-            }
-            int quesNo = sc.nextInt();
-            sc.nextLine(); // Consume newline
-            if (quesNo > 0 && quesNo <= questions.size()) {
-                String oldQuestion = questions.get(quesNo - 1);
-                quizesOfChosenTopic.remove(oldQuestion);
-
-                System.out.println("Enter the new question:");
-                String newQuestion = sc.nextLine();
+            String chosenTopic = sc.nextLine();
+            if (quizBasedOnTopic.containsKey(chosenTopic)) {
+                System.out.println("Enter the question you want to add:");
+                String ques = sc.nextLine();
                 Quizz q = new Quizz();
                 System.out.println("Enter the four options:");
                 for (int j = 0; j < 4; j++) {
@@ -234,27 +174,122 @@ public static void createQuiz() {
                 System.out.println("Enter the correct option number (1-4):");
                 int optionNo = sc.nextInt();
                 sc.nextLine(); // Consume newline
+                if (optionNo < 1 || optionNo > 4) {
+                    System.out.println("Invalid option number. It should be between 1 and 4.");
+                    return;
+                }
                 String answer = q.getOptions().get(optionNo - 1);
                 q.setAnswer(answer);
                 q.setAnswerId(optionNo);
-                quizesOfChosenTopic.put(newQuestion, q);
-
-                System.out.println("Question edited in " + chosenTopic);
+                quizBasedOnTopic.get(chosenTopic).put(ques, q);
+                System.out.println("Question added to " + chosenTopic);
             } else {
-                System.out.println("Invalid question number!");
+                System.out.println("Invalid Topic!");
             }
-        } else {
-            System.out.println("Invalid Topic!");
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a number.");
+            sc.nextLine(); // Clear the invalid input
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Invalid option number. It should be between 1 and 4.");
+            sc.nextLine(); // Clear the invalid input
         }
     }
 
+    private static void removeQuestion() {
+        try {
+            System.out.println("Select the topic to remove a question:");
+            for (String topic : topics) {
+                System.out.println(topic);
+            }
+            String chosenTopic = sc.nextLine();
+            if (quizBasedOnTopic.containsKey(chosenTopic)) {
+                Map<String, Quizz> quizesOfChosenTopic = quizBasedOnTopic.get(chosenTopic);
+                System.out.println("Select the question to remove:");
+                List<String> questions = new ArrayList<>(quizesOfChosenTopic.keySet());
+                for (int i = 0; i < questions.size(); i++) {
+                    System.out.println((i + 1) + ". " + questions.get(i));
+                }
+                int quesNo = sc.nextInt();
+                sc.nextLine(); // Consume newline
+                if (quesNo > 0 && quesNo <= questions.size()) {
+                    quizesOfChosenTopic.remove(questions.get(quesNo - 1));
+                    System.out.println("Question removed from " + chosenTopic);
+                } else {
+                    System.out.println("Invalid question number!");
+                }
+            } else {
+                System.out.println("Invalid Topic!");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a number.");
+            sc.nextLine(); // Clear the invalid input
+        }
+    }
+
+    private static void editQuestion() {
+        try {
+            System.out.println("Select the topic to edit a question:");
+            for (String topic : topics) {
+                System.out.println(topic);
+            }
+            String chosenTopic = sc.nextLine();
+            if (quizBasedOnTopic.containsKey(chosenTopic)) {
+                Map<String, Quizz> quizesOfChosenTopic = quizBasedOnTopic.get(chosenTopic);
+                System.out.println("Select the question to edit:");
+                List<String> questions = new ArrayList<>(quizesOfChosenTopic.keySet());
+                for (int i = 0; i < questions.size(); i++) {
+                    System.out.println((i + 1) + ". " + questions.get(i));
+                }
+                int quesNo = sc.nextInt();
+                sc.nextLine(); // Consume newline
+                if (quesNo > 0 && quesNo <= questions.size()) {
+                    String oldQuestion = questions.get(quesNo - 1);
+                    quizesOfChosenTopic.remove(oldQuestion);
+
+                    System.out.println("Enter the new question:");
+                    String newQuestion = sc.nextLine();
+                    Quizz q = new Quizz();
+                    System.out.println("Enter the four options:");
+                    for (int j = 0; j < 4; j++) {
+                        String option = sc.nextLine();
+                        q.setOption(option);
+                    }
+                    System.out.println("Enter the correct option number (1-4):");
+                    int optionNo = sc.nextInt();
+                    sc.nextLine(); // Consume newline
+                    if (optionNo < 1 || optionNo > 4) {
+                        System.out.println("Invalid option number. It should be between 1 and 4.");
+                        return;
+                    }
+                    String answer = q.getOptions().get(optionNo - 1);
+                    q.setAnswer(answer);
+                    q.setAnswerId(optionNo);
+                    quizesOfChosenTopic.put(newQuestion, q);
+
+                    System.out.println("Question edited in " + chosenTopic);
+                } else {
+                    System.out.println("Invalid question number!");
+                }
+            } else {
+                System.out.println("Invalid Topic!");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a number.");
+            sc.nextLine(); // Clear the invalid input
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Invalid option number. It should be between 1 and 4.");
+            sc.nextLine(); // Clear the invalid input
+        }
+    }
+
+
     public static void listQuiz() {
-        for(Map.Entry<String,Map<String,Quizz>> list : quizBasedOnTopic.entrySet()){
+        for(Map.Entry<String,Map<String,Quizz>> list : quizBasedOnTopic.entrySet()) {
             System.out.println(list.getKey());
-            for(Map.Entry<String,Quizz> list1 : list.getValue().entrySet()){
+            for (Map.Entry<String, Quizz> list1 : list.getValue().entrySet()) {
                 System.out.println(list1.getKey());
             }
-            }
+        }
     }
     public static void displayInstructions() {
         System.out.println("Instructions for the Quiz:");

@@ -6,17 +6,17 @@ public class Main {
         System.out.println("\n\n-------------Welcome to Sundar's Quiz Generator--------------");
         System.out.println();
         while(true) {
-            System.out.println("1. Take Predefined Quiz\n2. Create Quiz\n3. Take Quiz\n4. Modify Quiz\n5. List Quiz \n6. Exit");
+            System.out.println("1. create Quiz\n2. Take Predefined Quiz\n3. Take Quiz\n4. Modify Quiz\n5. List Quiz \n6. Exit");
             int option = sc.nextInt();
+            //sc.nextLine();
             switch(option) {
                 case 1:
-                    QuizGenerator.takePredefinedQuiz();
-                    break;
-                case 2:
                     QuizGenerator.createQuiz();
                     break;
+                case 2:
+                    QuizGenerator.takePredefinedQuiz();
+                    break;
                 case 3:
-                    //if(!QuizGenerator.questions.isEmpty())
                     if(!QuizGenerator.topics.isEmpty())
                         QuizGenerator.takeQuiz();
                     else
