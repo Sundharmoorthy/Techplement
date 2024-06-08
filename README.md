@@ -11,7 +11,6 @@ Quiz Generator is a Java application that allows users to create and take quizze
 - [Usage](#usage)
 - [Commands](#commands)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
@@ -33,7 +32,7 @@ Quiz Generator is a Java application that allows users to create and take quizze
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/your-username/quiz-generator.git
+    https://github.com/Sundharmoorthy/Techplement.git
     ```
 
     *Alternatively*, download the repository as a ZIP file and extract it.
