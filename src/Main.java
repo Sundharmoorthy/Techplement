@@ -6,7 +6,7 @@ public class Main {
         System.out.println("\n\n-------------Welcome to Sundar's Quiz Generator--------------");
         System.out.println();
         while(true) {
-            System.out.println("1. create Quiz\n2. Take Predefined Quiz\n3. Take Quiz\n4. Modify Quiz\n5. List Quiz \n6. Exit");
+            System.out.println("1. Create Quiz\n2. Take Predefined Quiz\n3. Take Quiz\n4. Modify Quiz\n5. List Created Quiz \n6. Exit");
             int option = sc.nextInt();
             //sc.nextLine();
             switch(option) {

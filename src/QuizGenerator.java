@@ -1,14 +1,12 @@
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class QuizGenerator {
 
 
-    static Map<String, Quizz> quizes;
+//  static Map<String, Quizz> quizes;
     static Map<String, Map<String, Quizz>> quizBasedOnTopic = new HashMap<>();
     static Scanner sc = new Scanner(System.in);
     static ArrayList<String> topics = new ArrayList<>();
-    static boolean check = false;
 
 public static void createQuiz() {
     try {
